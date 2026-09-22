@@ -1,6 +1,8 @@
 {
   "name": "email-only-login",
-  "scripts": {},
+  "scripts": {
+    "dev": "tsx watch index.ts"
+  },
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
@@ -17,8 +19,17 @@
     "typescript": "^7.0.2"
   },
   "dependencies": {
+    "@types/cookie-parser": "^1.4.9",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/nodemailer": "^7.0.4",
+    "@types/pg": "^8.15.5",
+    "cookie-parser": "^1.4.7",
     "dotenv": "^18.0.1",
     "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^10.0.10",
+    "pg": "^8.16.3",
+    "sql-template-tag": "^5.2.1",
     "zod": "^4.6.5"
   }
 }
