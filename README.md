@@ -4,7 +4,8 @@ This project is a small authentication exercise for EYouth Academy. It logs user
 
 The app uses Express, PostgreSQL, JSON Web Tokens, and Nodemailer. It stores the refresh token in PostgreSQL and keeps the access, refresh, and OTP tokens in HTTP-only cookies.
 
-This project is for learning. It is not ready to use as a production authentication service.
+> [!IMPORTANT]
+> This project is for learning. It is not ready to use as a production authentication service.
 
 ## Setup
 
