@@ -22,7 +22,7 @@ PORT=3000
 DATABASE_URL=postgresql://user:password@localhost:5432/eyouth_auth
 ACCESS_TOKEN_SECRET=replace-with-at-least-32-characters
 REFRESH_TOKEN_SECRET=replace-with-at-least-32-characters
-GMAIL_USER=you@example.com
+GMAIL_USER=you@gmail.com
 GMAIL_APP_PASS=your-16-character-app-password
 ```
 
@@ -53,7 +53,7 @@ The app runs at `http://localhost:3000` by default.
 
 ## Project layout
 
-- `index.ts` contains routes and server startup.
+- `app.ts` contains routes and server startup.
 - `config/` validates environment variables and defines token expiration periods.
 - `db/` contains PostgreSQL queries.
 - `mailer.ts` configures Gmail delivery.
@@ -61,10 +61,4 @@ The app runs at `http://localhost:3000` by default.
 - `pages/` contains the HTML pages.
 - `types/` contains request and token types.
 
-## Checks
 
-Run the TypeScript compiler without emitting files:
-
-```sh
-pnpm exec tsc --noEmit
-```
