@@ -1,21 +1,20 @@
 # Email-only login
 
-This project is a small authentication exercise for EYouth Academy. It logs users in with a one-time code sent to their email address.
+Email-only authentication practice for EYouth Academy. The app uses Express, PostgreSQL, JWTs, and Nodemailer to send one-time login codes.
 
-The app uses Express, PostgreSQL, JSON Web Tokens, and Nodemailer. It stores the refresh token in PostgreSQL and keeps the access, refresh, and OTP tokens in HTTP-only cookies.
-
-> [!IMPORTANT]
-> This project is for learning. It is not ready to use as a production authentication service.
+<div style="border: 1px solid #d1242f; border-left: 5px solid #d1242f; padding: 12px; color: #d1242f;">
+  <strong>Important:</strong> This project is for learning. It is not ready for production use.
+</div>
 
 ## Setup
 
-Install the dependencies from the project root:
+Install dependencies:
 
 ```sh
 pnpm install
 ```
 
-Create a `.env` file in the project root:
+Create `.env` in the project root:
 
 ```env
 NODE_ENV=development
@@ -27,9 +26,7 @@ GMAIL_USER=you@example.com
 GMAIL_APP_PASS=your-16-character-app-password
 ```
 
-The Gmail account must have an app password available for Nodemailer.
-
-Create the PostgreSQL table used by the app:
+Create the PostgreSQL table:
 
 ```sql
 CREATE TABLE IF NOT EXISTS email_users (
@@ -39,7 +36,7 @@ CREATE TABLE IF NOT EXISTS email_users (
 );
 ```
 
-Start the development server:
+Start the server:
 
 ```sh
 pnpm dev
@@ -47,23 +44,21 @@ pnpm dev
 
 The app runs at `http://localhost:3000` by default.
 
-## How it works
+## Routes
 
-1. The user submits an email address at `/login`.
-2. The app creates the user if needed and sends a six-digit OTP by email.
-3. The user submits the OTP at `/verify-otp`.
-4. The app stores a refresh token in PostgreSQL and sets an access-token cookie.
-5. The authenticated user can open `/home` or log out with `/logout`.
+- `/login` sends an OTP to the submitted email address.
+- `/verify-otp` verifies the OTP and creates a session.
+- `/home` displays the authenticated user.
+- `/logout` clears the session.
 
 ## Project layout
 
-- `index.ts` contains the Express routes and server startup.
-- `config/env.ts` validates environment variables.
-- `config/auth.ts` defines token expiration periods.
-- `db/index.ts` contains PostgreSQL queries for users and refresh tokens.
-- `mailer.ts` configures Gmail delivery through Nodemailer.
-- `middleware/auth.middleware.ts` validates OTP, access, and refresh sessions.
-- `pages/` contains the login, OTP verification, and home pages.
+- `index.ts` contains routes and server startup.
+- `config/` validates environment variables and defines token expiration periods.
+- `db/` contains PostgreSQL queries.
+- `mailer.ts` configures Gmail delivery.
+- `middleware/` validates authentication cookies.
+- `pages/` contains the HTML pages.
 - `types/` contains request and token types.
 
 ## Checks
