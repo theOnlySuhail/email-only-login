@@ -1,0 +1,5 @@
+export const REFRESH_TOKEN_EXPIRATION_PERIOD = '1m';
+
+export const ACCESS_TOKEN_EXPIRATION_PERIOD = '30s';
+
+export const OTP_TOKEN_EXPIRATION_PERIOD = '30s';
