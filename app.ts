@@ -33,7 +33,7 @@ app.post('/login', async (req: Request<{}, {}, LoginBody>, res: Response) => {
 
   // Create a short-lived token containing only the hashed OTP.
   const otp = crypto.randomInt(100000, 1000000).toString();
-  const otpToken = jwt.sign({ email, otpHash: hashOtp(otp) }, env.ACCESS_TOKEN_SECRET, {
+  const otpToken = jwt.sign({ email, otpHash: hashOtp(email, otp) }, env.ACCESS_TOKEN_SECRET, {
     expiresIn: OTP_TOKEN_EXPIRATION_PERIOD,
   });
 
@@ -69,7 +69,8 @@ app.post('/verify-otp', async (req: Request<{}, {}, OtpBody>, res: Response) => 
   try {
     // Verify the token and compare the submitted code against its hash.
     const otpToken = jwt.verify(otpTokenToken, env.ACCESS_TOKEN_SECRET) as OtpToken;
-    if (!safeEqual(hashOtp(req.body.otp), otpToken.otpHash)) throw new Error('Invalid OTP');
+    if (!safeEqual(hashOtp(otpToken.email, req.body.otp), otpToken.otpHash))
+      throw new Error('Invalid OTP');
     // await db.ensureUser(otpToken.email);
 
     // Persist the refresh session and issue a short-lived access token.
@@ -107,14 +108,14 @@ app.post('/logout', validSession, async (req: Request, res: Response) => {
   return res.redirect('/login');
 });
 
-function hashOtp(otp: string): string {
-  return crypto.createHash('sha256').update(otp).digest('hex');
+function hashOtp(email: string, otp: string): string {
+  return crypto.createHmac('sha256', env.OTP_SECRET).update(`${email}:${otp}`).digest('hex');
 }
 
 /** Compares two strings without exposing timing differences for equal-length values. */
 function safeEqual(left: string, right: string): boolean {
-  const leftBuffer = Buffer.from(left);
-  const rightBuffer = Buffer.from(right);
+  const leftBuffer = Buffer.from(left, 'hex');
+  const rightBuffer = Buffer.from(right, 'hex');
   return (
     leftBuffer.length === rightBuffer.length && crypto.timingSafeEqual(leftBuffer, rightBuffer)
   );

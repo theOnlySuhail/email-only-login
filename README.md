@@ -24,6 +24,7 @@ ACCESS_TOKEN_SECRET=replace-with-at-least-32-characters
 REFRESH_TOKEN_SECRET=replace-with-at-least-32-characters
 GMAIL_USER=you@gmail.com
 GMAIL_APP_PASS=your-16-character-app-password
+OTP_SECRET=replace-with-at-least-32-characters
 ```
 
 Create the PostgreSQL table:

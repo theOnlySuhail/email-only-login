@@ -11,6 +11,7 @@ const envSchema = z.object({
   REFRESH_TOKEN_SECRET: z.string().min(32),
   GMAIL_USER: z.email(),
   GMAIL_APP_PASS: z.string().length(16),
+  OTP_SECRET: z.string().min(32),
 });
 
 export type Env = z.infer<typeof envSchema>;
