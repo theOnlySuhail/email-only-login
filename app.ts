@@ -26,7 +26,7 @@ app.get('/login', alreadyLoggedIn, async (_req: Request, res: Response) => {
   return res.send(await fs.readFile(path.join(import.meta.dirname, 'pages/login.html'), 'utf8'));
 });
 
-app.post('/login', async (req: Request<{}, {}, LoginBody>, res: Response) => {
+app.post('/api/login', async (req: Request<{}, {}, LoginBody>, res: Response) => {
   const email = req.body.email?.trim().toLowerCase();
   if (!email || !isEmail(email)) return res.status(400).json({ error: 'Enter a valid email.' });
   await db.ensureUser(email);
@@ -60,7 +60,7 @@ app.get('/verify-otp', validOtpSession, async (req: Request, res: Response) => {
   return res.send(html.replace('{{email}}', escapeHtml(req.user!.email)));
 });
 
-app.post('/verify-otp', async (req: Request<{}, {}, OtpBody>, res: Response) => {
+app.post('/api/verify-otp', async (req: Request<{}, {}, OtpBody>, res: Response) => {
   const otpTokenToken = req.cookies.OTP_TOKEN as string | undefined;
   if (!otpTokenToken || !/^\d{6}$/.test(req.body.otp ?? '')) {
     return res.status(400).json({ error: 'Enter the six-digit code from your email.' });
@@ -101,7 +101,7 @@ app.get('/home', validSession, async (req: Request, res: Response) => {
   return res.send(html.replace('{{email}}', req.user!.email));
 });
 
-app.post('/logout', validSession, async (req: Request, res: Response) => {
+app.post('/api/logout', validSession, async (req: Request, res: Response) => {
   await db.clearRefreshToken(req.user!.email);
   res.clearCookie('ACCESS_TOKEN');
   return res.redirect('/login');
