@@ -1,7 +1,7 @@
 {
   "name": "email-only-login",
   "scripts": {
-    "dev": "tsx watch index.ts"
+    "dev": "tsx watch app.ts"
   },
   "devEngines": {
     "packageManager": {

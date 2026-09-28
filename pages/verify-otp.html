@@ -1,16 +1,54 @@
 <!doctype html>
 <html lang="en">
-  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Verify email</title></head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Verify email</title>
+  </head>
   <body>
     <main>
       <h1>OTP Verification</h1>
-      <form method="post" action="/verify-otp">
-        <p>Enter the six-digit code sent to: {{email}}</p>
+      <p>Enter the six-digit code sent to: {{email}}</p>
+      <form onsubmit="event.preventDefault()">
         <label for="otp">OTP </label>
-        <input id="otp" name="otp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required>
-        <button type="submit">Verify</button>
+        <input
+          id="otp"
+          name="otp"
+          inputmode="numeric"
+          autocomplete="one-time-code"
+          pattern="[0-9]{6}"
+          maxlength="6"
+          required
+        />
+        <button id="btn-submit" type="submit">Verify</button>
       </form>
       <p><a href="/login">Use a different email</a></p>
     </main>
+    <script>
+      const btnSubmit = document.getElementById('btn-submit');
+      btnSubmit.addEventListener('click', async () => {
+        const otp = document.getElementById('otp').value;
+        const email = '{{email}}';
+        try {
+          const response = await fetch('/verify-otp', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ otp }),
+          });
+
+          if (response.ok) {
+            window.location.href = '/home';
+          } else {
+            const data = await response.json();
+            alert(data.error || 'Invalid or expired OTP.');
+          }
+        } catch (err) {
+          console.error('Error verifying OTP:', err);
+          alert('Invalid or expired OTP.');
+        }
+      });
+    </script>
   </body>
 </html>

@@ -17,11 +17,11 @@ export function validOtpSession(req: Request, res: Response, next: NextFunction)
   if (!otpToken) return res.redirect('/login');
 
   try {
-    const user = jwt.verify(otpToken, env.ACCESS_TOKEN_SECRET) as OtpToken;
+    const user = jwt.verify(otpToken, env.OTP_TOKEN_SECRET) as OtpToken;
     if (!user.email || !user.otpHash) throw new Error('Invalid OTP token');
     req.user = { email: user.email };
     return next();
-  } catch {
+  } catch (err) {
     res.clearCookie('OTP_TOKEN');
     return res.redirect('/login');
   }
@@ -62,7 +62,6 @@ export async function validSession(req: Request, res: Response, next: NextFuncti
     expiresIn: ACCESS_TOKEN_EXPIRATION_PERIOD,
   });
   console.log(`ACCESS_TOKEN refreshed for ${decoded.email}`);
-  
 
   res.cookie('ACCESS_TOKEN', newAccessToken, {
     httpOnly: true,
