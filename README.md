@@ -24,7 +24,8 @@ ACCESS_TOKEN_SECRET=replace-with-at-least-32-characters
 REFRESH_TOKEN_SECRET=replace-with-at-least-32-characters
 GMAIL_USER=you@gmail.com
 GMAIL_APP_PASS=your-16-character-app-password
-OTP_SECRET=replace-with-at-least-32-characters
+OTP_TOKEN_SECRET=replace-with-at-least-32-characters
+OTP_PEPPER_SECRET=replace-with-at-least-32-characters
 ```
 
 Create the PostgreSQL table:
@@ -47,10 +48,14 @@ The app runs at `http://localhost:3000` by default.
 
 ## Routes
 
-- `/login` sends an OTP to the submitted email address.
-- `/verify-otp` verifies the OTP and creates a session.
-- `/home` displays the authenticated user.
-- `/logout` clears the session.
+- `GET /login` displays the login page.
+- `POST /api/login` sends a six-digit OTP to the submitted email address.
+- `GET /verify-otp` displays the OTP form.
+- `POST /api/verify-otp` verifies the OTP and creates a session.
+- `GET /home` displays the authenticated user.
+- `POST /api/logout` clears the session.
+
+OTP tokens expire after 30 seconds. Access tokens expire after 30 seconds, and refresh tokens expire after 1 minute.
 
 ## Project layout
 
