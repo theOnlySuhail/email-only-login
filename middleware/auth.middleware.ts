@@ -47,6 +47,7 @@ export async function validSession(req: Request, res: Response, next: NextFuncti
   // Expired access tokens can continue if the stored refresh token is valid.
   const decoded = jwt.decode(accessToken) as AccessToken | null;
   if (!decoded?.email) return res.redirect('/login');
+  
   const refreshToken = await db.findRefreshToken(decoded.email);
   try {
     if (!refreshToken) throw new Error('Missing refresh token');

@@ -29,7 +29,6 @@ app.get('/login', alreadyLoggedIn, async (_req: Request, res: Response) => {
 app.post('/api/login', async (req: Request<{}, {}, LoginBody>, res: Response) => {
   const email = req.body.email?.trim().toLowerCase();
   if (!email || !isEmail(email)) return res.status(400).json({ error: 'Enter a valid email.' });
-  await db.ensureUser(email);
 
   // Create a short-lived token containing only the hashed OTP.
   const otp = crypto.randomInt(100000, 1000000).toString();
@@ -88,6 +87,8 @@ app.post('/api/verify-otp', async (req: Request<{}, {}, OtpBody>, res: Response)
       sameSite: 'strict',
       secure: env.NODE_ENV === 'production',
     });
+
+    await db.ensureUser(otpToken.email);
 
     return res.redirect('/home');
   } catch {
